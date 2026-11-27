@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Road Maintenance Management Platform">
+  <title>Road Maintenance Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header>
+    <h1>Road Maintenance Platform</h1>
+    <nav aria-label="Platform sections">
+      <div role="tablist" aria-label="Platform sections" class="tabs">
+        <button type="button" role="tab" id="tab-report" aria-selected="true" aria-controls="panel-report" tabindex="0">Report Issue</button>
+        <button type="button" role="tab" id="tab-queue" aria-selected="false" aria-controls="panel-queue" tabindex="-1">Priority Queue (<span id="queue-count">0</span>)</button>
+        <button type="button" role="tab" id="tab-records" aria-selected="false" aria-controls="panel-records" tabindex="-1">Resolution Records (<span id="records-count">0</span>)</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+    <div id="status-banner" role="status" aria-live="polite" class="status-banner"></div>
+
+    <section id="panel-report" role="tabpanel" aria-labelledby="tab-report">
+      <h2>Report Issue</h2>
+      <form id="report-form" class="box">
+        <fieldset>
+          <legend>Issue Details</legend>
+          <label for="issue-type">Issue Type</label>
+          <select id="issue-type" name="type" required>
+            <option value="">Select type</option>
+            <option value="Pothole">Pothole</option>
+            <option value="Damaged Road">Damaged Road</option>
+            <option value="Broken Signal">Broken Signal</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <label for="issue-location">Location</label>
+          <input type="text" id="issue-location" name="location" required minlength="3" placeholder="Street or landmark">
+        </fieldset>
+
+        <fieldset>
+          <legend>Severity</legend>
+          <label for="sev-high" class="inline"><input type="radio" id="sev-high" name="severity" value="High" required> High</label>
+          <label for="sev-medium" class="inline"><input type="radio" id="sev-medium" name="severity" value="Medium"> Medium</label>
+          <label for="sev-low" class="inline"><input type="radio" id="sev-low" name="severity" value="Low"> Low</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Details &amp; Photo</legend>
+          <label for="issue-description">Description</label>
+          <textarea id="issue-description" name="description" rows="3" required minlength="5"></textarea>
+
+          <label for="issue-photo">Photograph</label>
+          <input type="file" id="issue-photo" name="photo" accept="image/*">
+          <figure id="photo-preview" hidden>
+            <img id="photo-img" alt="Uploaded road issue preview" width="240" height="160">
+            <figcaption id="photo-caption">Photo preview</figcaption>
+          </figure>
+        </fieldset>
+
+        <button type="submit" class="blue">Submit Issue</button>
+      </form>
+    </section>
+
+    <section id="panel-queue" role="tabpanel" aria-labelledby="tab-queue" hidden>
+      <h2>Priority Queue</h2>
+      <search aria-label="Filter active issues" class="box row">
+        <div>
+          <label for="filter-severity">Severity</label>
+          <select id="filter-severity" name="filterSeverity">
+            <option value="All">All</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+        <div>
+          <label for="filter-status">Status</label>
+          <select id="filter-status" name="filterStatus">
+            <option value="All">All</option>
+            <option value="Reported">Reported</option>
+            <option value="Assigned">Assigned</option>
+            <option value="In Progress">In Progress</option>
+          </select>
+        </div>
+      </search>
+      <div id="queue-list"></div>
+      <p id="queue-empty" hidden>No active issues.</p>
+    </section>
+
+    <section id="panel-records" role="tabpanel" aria-labelledby="tab-records" hidden>
+      <h2>Resolution Records</h2>
+      <div id="records-box" class="box table-wrap">
+        <table>
+          <caption>Resolved Road Issues</caption>
+          <thead>
+            <tr>
+              <th scope="col">Issue Type</th>
+              <th scope="col">Location</th>
+              <th scope="col">Photo</th>
+              <th scope="col">Assigned Crew</th>
+              <th scope="col">Resolution Note</th>
+              <th scope="col">Resolved Date</th>
+            </tr>
+          </thead>
+          <tbody id="records-tbody"></tbody>
+        </table>
+      </div>
+      <p id="records-empty" hidden>No resolved issues yet.</p>
+    </section>
+  </main>
+
+  <footer>Road Maintenance Platform</footer>
+
+  <dialog id="resolve-dialog" aria-labelledby="resolve-title">
+    <h2 id="resolve-title">Resolve Issue</h2>
+    <p id="resolve-summary"></p>
+    <form method="dialog">
+      <label for="resolution-note">Resolution Note</label>
+      <textarea id="resolution-note" name="resolutionNote" rows="3" required minlength="3" autofocus></textarea>
+      <div class="row dialog-btns">
+        <button type="submit" value="cancel" formnovalidate>Cancel</button>
+        <button type="submit" value="confirm" class="blue">Save</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
